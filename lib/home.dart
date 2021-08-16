@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -82,7 +84,7 @@ SingleChildScrollView(
                   height: 140,
                   child: Image(
                     fit: BoxFit.contain,
-                  image: NetworkImage("https://stat1.bollywoodhungama.in/wp-content/uploads/2016/03/74637391.jpg"),
+                  image: MemoryImage(base64Decode((data.poster_url).toString())),
                 ),),
                         trailing: InkWell(
                           onTap: (){
