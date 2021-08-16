@@ -5,6 +5,8 @@ import 'package:movies_app_hive/Add_movie.dart';
 import 'package:movies_app_hive/Edit_Details.dart';
 import 'package:movies_app_hive/Theme/theme.dart';
 import 'package:movies_app_hive/movie_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 
@@ -16,6 +18,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,10 +37,13 @@ class _HomeState extends State<Home> {
 ),
 
 body:  
+
 SingleChildScrollView(
   child:   Column(
   
     children: [
+      
+     
   
           FutureBuilder(
         future: Hive.openBox<DataModel>("moviesBox"),

@@ -29,10 +29,11 @@ class _AddMovieState extends State<AddMovie> {
   Future getImage() async{
     final ImagePicker _picker = ImagePicker();
   XFile?_image = await _picker.pickImage(source: ImageSource.gallery);
-   setState(() {
+   setState(() async{
      print("inside setstate");
      _file = File(_image!.path);
-     imgBase64 = generateBytes(_file!) as String;
+     // ignore: unnecessary_cast
+     imgBase64 = await generateBytes(_file!) as String;
      print("imgBase64 generated "+imgBase64);
    }); 
    
@@ -41,16 +42,23 @@ class _AddMovieState extends State<AddMovie> {
   Future<String> generateBytes(File image) async{
     print("inside generateBytes");
     final bytes = image.readAsBytesSync();
+    print("Converted bytes"+ bytes.toString());
     // String base64Encode(List<int> bytes) => base64.encode(bytes);
-     return convert(bytes);
+     return await convert(bytes);
     
   }
   Future<String> convert(bytes) async{
     print("inside convert");
 
-    return base64Encode(bytes);
+    imgBase64=base64Encode(bytes);
+    print(imgBase64.toString());
+    return imgBase64;
+
     
   }
+  // String decode(){
+  //   Uint8List bytes = BASE64.decode(imgBase64);
+  // }
 
   TextEditingController movieTitleController = TextEditingController();
   TextEditingController directorController = TextEditingController();
@@ -75,8 +83,8 @@ class _AddMovieState extends State<AddMovie> {
                     height: 140,
                     width: 140,
                     color: MyColors.primaryColorLight,
-                    child: _file ==null?Icon(Icons.camera_alt_rounded,
-                    size: 50,):Image.file(_file!)
+                    child: imgBase64 ==""?Icon(Icons.camera_alt_rounded,
+                    size: 50,):Image.memory(base64Decode(imgBase64))
                   ),
                 ),
               ),

@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:movies_app_hive/LoginPage.dart';
+import 'package:movies_app_hive/MainScreen.dart';
 import 'package:movies_app_hive/Theme/theme.dart';
 import 'package:movies_app_hive/home.dart';
 import 'package:movies_app_hive/movie_model.dart';
@@ -17,51 +20,27 @@ void main() async {
   Hive.init(directory.path);
   Hive.registerAdapter(DataModelAdapter());
 
-  
-  runApp(
+  FirebaseAuth.instance
+  .authStateChanges()
+  .listen((User? user) {
+    if (user == null) {
+
+      runApp(
     MaterialApp(
-    home: Home(),
+    home: LoginPage(),
   
   ));
+      print('User is currently signed out!');
+    } else {
+      runApp(
+    MaterialApp( 
+    home: Navbar(),
+  ));
+      print('User is signed in!');
+    }
+  });
+  
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({ Key? key }) : super(key: key);
 
-  @override
-  _MainPageState createState() => _MainPageState();
-}
 
-class _MainPageState extends State<MainPage> {
- 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-       decoration: BoxDecoration(
-    gradient: LinearGradient(
-      colors: [MyColors.primaryColorLight, MyColors.primaryColor
-      ])
-  ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Center(
-          child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom( 
-              primary: Colors.white,
-              onPrimary: Colors.black,
-              minimumSize: Size (300, 50),
-
-              ),
-            onPressed: (){
-              // final provider = Provider.of(context, listen:false);
-              // provider.googleLogin();
-            },
-             icon: FaIcon(FontAwesomeIcons.google , color: MyColors.primaryColorLight,),
-              label: Text("Sign In with Google"),
-              )
-        )
-        
-      ),
-    );
-  }
-}
