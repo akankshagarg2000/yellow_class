@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,36 +28,52 @@ class _LoginPageState extends State<LoginPage> {
                           colors: [MyColors.primaryColor, MyColors.primaryColorLight])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-         body: Center(
-        child: RaisedButton.icon(
-          color: Colors.white,
-          onPressed: () async{
-             setState(() {
-            isLoading = true;
-          });
-          FirebaseService service = new FirebaseService();
-          try {
-           await service.signInwithGoogle();
-          Navigator.push(
+         body: Column(
+           mainAxisAlignment: MainAxisAlignment.center,
+           crossAxisAlignment: CrossAxisAlignment.center,
+           children: [
+             Padding(
+               padding: const EdgeInsets.all(8.0),
+               child: Padding(
+                 padding: const EdgeInsets.all(8.0),
+                 child: Image(
+                   height: 350,
+                   width: 350,
+                   image: AssetImage("Images/image1.png"),),
+               ),
+             ),
+             Center(
+               child: RaisedButton.icon(
+                 color: Colors.white,
+                 onPressed: () async{
+                    setState(() {
+                   isLoading = true;
+                 });
+                 FirebaseService service = new FirebaseService();
+                 try {
+                  await service.signInwithGoogle();
+                 Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => Navbar()),
   );
-          } catch(e){
-            if(e is FirebaseAuthException){
-              showMessage(e.message!);
-            }
-          }
-          setState(() {
-            isLoading = false;
-          });
-        },
-        textColor: Colors.black,
-         icon: Icon(FontAwesomeIcons.google, color: MyColors.primaryColor,) ,
-        label: Padding(
-          padding: const EdgeInsets.symmetric(horizontal:18.0, vertical: 12),
-          child: Text("Sign In with Google"),
-        )),
-      ),
+                 } catch(e){
+                   if(e is FirebaseAuthException){
+                     showMessage(e.message!);
+                   }
+                 }
+                 setState(() {
+                   isLoading = false;
+                 });
+               },
+               textColor: Colors.black,
+                icon: Icon(FontAwesomeIcons.google, color: MyColors.primaryColor,) ,
+               label: Padding(
+                 padding: const EdgeInsets.symmetric(horizontal:18.0, vertical: 12),
+                 child: Text("Sign In with Google"),
+               )),
+             ),
+           ],
+         ),
 
       )
       
